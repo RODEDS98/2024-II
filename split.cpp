@@ -10,7 +10,7 @@ void imprimir(int* arr, size_t t){
 
 }
 
-void split(int* p, int* q, int* arr, size_t t) {      //      p                             q            
+void split(int* p, int* q) {      //      p                             q            
                                   //      0  1  2  3  4     5  6  7  8  9
                                     //   10 11 12 13 14    15 16 17 18 19
 	while(q!=(p+((q-p+1)/2)-1)){                
@@ -57,6 +57,6 @@ int main() {
     cout <<endl;
     
     cout <<"reagrupando (Split)"<<endl; //Array ordenado
-    split(Arr_1,Arr_1 + tam,Arr_1,tam);
+    split(Arr_1,Arr_1 + tam);
     imprimir(Arr_1,tam);
 }
