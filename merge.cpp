@@ -1,22 +1,6 @@
 #include <iostream>
 using namespace std;
 
-void merge(int* p, int* q) {      //     p           q             , q - p  = 5
-	int* posfin =q+(q - p-1);     //      2 4 6 8 2   1  3  5  7  9	                  //cout<<*posfin<<endl;
-	while(q<posfin){                // entonces q+5      *  *  *  *
-		for (int* i = p; i < q; i++) {   //           +0 +1 +2 +3 +4
-			if (*i > *q) {
-				int tmp = *i;
-				*i = *q;
-				*q = tmp;
-			}
-		}
-		q++;
-	}
-}
-
-
-//funcion para imprimir
 void imprimir(int* arr, size_t t){
     for (int* i=arr; i< arr+t; i++) {
         cout << *i << ", ";
@@ -24,6 +8,28 @@ void imprimir(int* arr, size_t t){
     cout <<endl;
     cout <<endl;
 }
+
+void merge(int* p, int* q) {     
+	int* posfin =q+(q - p);  
+	
+	while(p!=q && q<posfin){ 
+	    
+	    if ( *p > *q) {
+	        int tmp_q=*q;
+    		for (int* i = q; i > p; i--) { 
+                *i=*(i-1);
+			}
+			*p=tmp_q;
+			q++;
+		}//imprimir(arr,t);
+		p++;
+
+	}
+}
+
+
+//funcion para imprimir
+
 
 // Funcion para contar los pares  (solo para verificacion)
 int count_par_impar(int* A, size_t t) {  // contar cuantos pares tiene el arreglo
@@ -37,8 +43,8 @@ int count_par_impar(int* A, size_t t) {  // contar cuantos pares tiene el arregl
 
 int main() {
     
-    int Arr_1[] = { 0,2,4,6,8,10,12,14,1,3,5,7,9,11,13,15 };
-    //int Arr_1[] = { 2,4,6,8,1,3,5,7 };
+    //int Arr_1[] = { 0,2,4,6,8,10,12,14,1,3,5,7,9,11,13,15 };
+    int Arr_1[] = { 2,4,6,8,1,3,5,7 };
     
     //generalizacion del tamaño
     size_t tam = sizeof(Arr_1);
