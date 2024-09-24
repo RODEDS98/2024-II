@@ -9,23 +9,42 @@ void imprimir(int* arr, size_t t){
     cout <<endl;
 
 }
-
-void split(int* p, int* q) {      //      p                             q            
-                                  //      0  1  2  3  4     5  6  7  8  9
-                                    //   10 11 12 13 14    15 16 17 18 19
-	while(q!=(p+((q-p+1)/2)-1)){                
-		for (int* i = p; i < q-1; i++) {   
-			if  ((*i)%2!=0 && *(i+1)%2==0)  {
-				int tmp = *(i+1);
-				*(i+1) = *i;
-				*i = tmp;
+//     0 1? 2 3  4 5 6* 7     0 2 3?  4 5 6 1 7    0 2  4 5? 6  3 1 7    0 2  4  6  3 1 7              2468 1357    12(4)6 8(3)57     1234 6857
+void split(int* p, int* q,int* arr, size_t t) {   
+    int temp_rango= q-p;
+    cout<<temp_rango<<endl;
+    int j=0;
+	while(q>p){     
+	    
+		if  ((*p)%2!=0 && (*q)%2==0 )  {
+		    //cout <<"x"<<endl;
+			int tmp_p = *p;	
+			
+			for (int* i = p; i < q; i++) {  				
+				*i = *(i+1);
+				
 			}
-            //imprimir(arr,t);
+			
+			//*(q+())=tmp_p;        //0    1 2 3 4 5
+			*(q+j)=tmp_p;        //0    1 2 3 4 5
+			//*q=tmp_p;
+
+			
+			imprimir( arr, t);
+			//cout<<q-p<<endl;
 		}
-        //cout <<endl;
-		q--;
-	}
+
+    		p++;
+		    q--;
+		} 
+		
+		cout<<endl;
+
+		j++;
 }
+
+
+
 
 
 
@@ -42,8 +61,8 @@ int count_par_impar(int* A, size_t t) {  // contar cuantos pares tiene el arregl
 
 int main() {
     
-    int Arr_1[] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 };
-    //int Arr_1[] = { 0,1,2,3,4 ,5,6,7,8,9 };
+    //int Arr_1[] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 };
+    int Arr_1[] = { 0,1,2,3,4 ,5,6,7,8,9 };
     
     //generalizacion del tamaño
     size_t tam = sizeof(Arr_1);
@@ -57,6 +76,6 @@ int main() {
     cout <<endl;
     
     cout <<"reagrupando (Split)"<<endl; //Array ordenado
-    split(Arr_1,Arr_1 + tam);
+    split(Arr_1,Arr_1 + tam-1,Arr_1, tam);
     imprimir(Arr_1,tam);
 }
