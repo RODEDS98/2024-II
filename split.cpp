@@ -8,39 +8,31 @@ void imprimir(int* arr, size_t t){
     }
     cout <<endl;
 
-}
-//     0 1? 2 3  4 5 6* 7     0 2 3?  4 5 6 1 7    0 2  4 5? 6  3 1 7    0 2  4  6  3 1 7              2468 1357    12(4)6 8(3)57     1234 6857
-void split(int* p, int* q,int* arr, size_t t) {   
-    int temp_rango= q-p;
-    cout<<temp_rango<<endl;
-    int j=0;
-	while(q>p){     
+}// i                   q
+//  0  2   4  6  8 9 xxxx//   0 2 4 5 6 7 1 3   
+void split(int* p, int* q) { //,int* arr, size_t t
+    
+    int* temp_mitad= p+ (q-p)/2;
+    temp_mitad++;
+    int tmp_p_anterior = *p;
+    
+	while(p<temp_mitad){ 
 	    
-		if  ((*p)%2!=0 && (*q)%2==0 )  {
-		    //cout <<"x"<<endl;
-			int tmp_p = *p;	
-			
-			for (int* i = p; i < q; i++) {  				
-				*i = *(i+1);
-				
+	    int tmp_p = *p;
+		if  ((*p)%2!=0 && tmp_p_anterior<=tmp_p )  {  //si el pivote es impar
+			for (int* i = p; i < q; i++) {  	     // y el anterior era menor			
+				*i = *(i+1);                  // que el nuevo siendo analizando
+				//imprimir( arr, t);
 			}
-			
-			//*(q+())=tmp_p;        //0    1 2 3 4 5
-			*(q+j)=tmp_p;        //0    1 2 3 4 5
-			//*q=tmp_p;
-
-			
-			imprimir( arr, t);
-			//cout<<q-p<<endl;
+			*q=tmp_p;
 		}
-
-    		p++;
-		    q--;
+		    			
+			//imprimir( arr, t);
+			//cout<<endl;
+    	p++;
+    	tmp_p_anterior=tmp_p;
 		} 
-		
-		cout<<endl;
-
-		j++;
+		//cout<<endl;
 }
 
 
@@ -61,8 +53,8 @@ int count_par_impar(int* A, size_t t) {  // contar cuantos pares tiene el arregl
 
 int main() {
     
-    //int Arr_1[] = { 1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16 };
-    int Arr_1[] = { 0,1,2,3,4 ,5,6,7,8,9 };
+    //int Arr_1[] = { 1,2,3,4,5,6,7,8   ,9,10,11,12,13,14,15,16 };
+    int Arr_1[] = { 0,1,2,3,4   ,5,6,7,8,9 };
     
     //generalizacion del tamaño
     size_t tam = sizeof(Arr_1);
@@ -73,9 +65,9 @@ int main() {
     
     cout <<"array original"<<endl; //Array original
     imprimir(Arr_1,tam);
-    cout <<endl;
+    cout <<tam<<endl;
     
     cout <<"reagrupando (Split)"<<endl; //Array ordenado
-    split(Arr_1,Arr_1 + tam-1,Arr_1, tam);
+    split(Arr_1,Arr_1 + tam-1);  //,Arr_1, tam
     imprimir(Arr_1,tam);
 }
