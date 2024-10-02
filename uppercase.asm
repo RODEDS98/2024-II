@@ -1,62 +1,60 @@
-## Uppercase.asm
-# SECCION DE INSTRUCCIONES (.text)
 .text
 .globl __start
 __start:
-
-    # Imprimir el mensaje para solicitar la cadena de texto
-    la $a0, prompt           # Cargar la dirección del mensaje "prompt"
-    li $v0, 4                # Llamada al sistema para imprimir string
+    # Mostrar el mensaje "Ingresar una cadena:"
+    la $a0, prm1
+    li $v0, 4
     syscall
 
-    # Leer la cadena de texto del usuario
-    li $v0, 8                # Llamada al sistema para leer cadena
-    la $a0, buffer           # Cargar la dirección del buffer donde almacenar la cadena
-    li $a1, 80               # Leer hasta 80 caracteres
+    # Leer la cadena del usuario
+    la $a0, orig          # Dirección donde guardar la cadena
+    li $a1, 100           # Máximo tamaño de la cadena
+    li $v0, 8             # Llamada de sistema para leer cadena
     syscall
 
-    # Convertir cada letra a mayúscula
-    la $t0, buffer           # Cargar la dirección del buffer en $t0
+    # Inicializar registros
+    la $s0, orig          # Dirección de la cadena
+    li $t0, 0             # Contador de la posición en la cadena
+    li $t7, 0x61          # ASCII de 'a'
+    li $t8, 0x7a          # ASCII de 'z'
 
-convertir:
-    lb $t1, 0($t0)           # Cargar el carácter actual
-    beq $t1, $zero, fin      # Si es el byte nulo (fin de cadena), termina
+# Bucle para recorrer la cadena y convertir letras
+loop:
+    lb $t1, 0($s0)         # Cargar el byte de la cadena
+    beq $t1, $zero, endLoop # Si es un null terminator, fin del bucle
 
-    # Verificar si es una letra minúscula ('a' = 97, 'z' = 122)
-    li $t2, 97               # Cargar el valor ASCII de 'a'
-    li $t3, 122              # Cargar el valor ASCII de 'z'
-    blt $t1, $t2, siguiente  # Si es menor que 'a', saltar
-    bgt $t1, $t3, siguiente  # Si es mayor que 'z', saltar
+    # Verificar si el carácter está en el rango de letras minúsculas
+    slt $t3, $t1, $t7      # $t3 = 1 si $t1 < 'a' (fuera de minúsculas por abajo)
+    slt $t4, $t8, $t1      # $t4 = 1 si $t1 > 'z' (fuera de minúsculas por arriba)
+    or $t3, $t3, $t4       # Si $t3 es 1, el carácter está fuera del rango de minúsculas
+    bne $t3, $zero, skip   # Si el carácter no es una minúscula, saltar
 
-    # Convertir a mayúscula restando 32 al valor ASCII
-    li $t4, 32
-    sub $t1, $t1, $t4
+    # Convertir de minúscula a mayúscula
+    addi $t1, $t1, -32     # Restar 32 para convertir de minúscula a mayúscula
+    sb $t1, 0($s0)         # Guardar el byte convertido
 
-    # Guardar el carácter convertido en el buffer
-    sb $t1, 0($t0)
+skip:
+    addi $s0, $s0, 1       # Avanzar al siguiente carácter
+    j loop                 # Repetir el ciclo
 
-siguiente:
-    addi $t0, $t0, 1         # Mover al siguiente carácter
-    j convertir              # Repetir para el siguiente carácter
-
-fin:
-    # Imprimir el mensaje de resultado
-    la $a0, result           # Cargar la dirección del mensaje "result"
-    li $v0, 4                # Llamada al sistema para imprimir string
+# Fin del bucle
+endLoop:
+    # Imprimir el mensaje "Upcased: "
+    la $a0, prm2
+    li $v0, 4
     syscall
 
-    # Imprimir la cadena convertida a mayúsculas
-    la $a0, buffer           # Cargar la dirección del buffer con el texto convertido
-    li $v0, 4                # Llamada al sistema para imprimir string
+    # Imprimir la cadena convertida
+    la $a0, orig
+    li $v0, 4
     syscall
 
-    # Salir del programa
-    li $v0, 10               # Llamada al sistema para salir
+    # Finalizar el programa
+    li $v0, 10
     syscall
 
-# SECCION DE VARIABLES EN MEMORIA (.data)
+# SECCIÓN DE DATOS
 .data
-prompt:    .asciiz "Ingrese una cadena de texto: "
-result:    .asciiz "\nEl texto en mayúsculas es: "
-buffer:    .space 80         # Reservar 80 bytes para almacenar la cadena
-endl:      .asciiz "\n
+orig: .space 100              # Espacio reservado para la cadena ingresada por el usuario
+prm1: .asciiz "Ingresar una cadena: "  # Mensaje para solicitar cadena
+prm2: .asciiz "\nUpcased: "            # Mensaje para la cadena convertida
