@@ -131,7 +131,15 @@ void descifrarModoASCII(int p, int q, int d, const string& mensaje) {
 int main() {
     int p, q, e, d, opcion, opcionModo;
     string mensaje;
-
+    cout<<" 1819"<<endl;
+    int abc;
+    abc=modExp(1819, 109, 551);
+    cout<<abc <<endl;
+    cout<<" 1415"<<endl;
+    int cda;
+    cda=modExp(1415, 473, 551);
+    cout<<cda <<endl;
+    cout<<endl;
     // Elección entre cifrar y descifrar
     cout << "Seleccione una opción:\n1. Cifrar\n2. Descifrar\n";
     cin >> opcion;
