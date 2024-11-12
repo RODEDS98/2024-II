@@ -162,7 +162,7 @@ int main() {
 	string mensaje;
 	cout<<" 1819"<<endl;
 	int abc;
-	abc=modExp(1819, 109, 551);
+	abc=modExp(391, 109, 551);
 	cout<<abc <<endl;
 	cout<<" 1415"<<endl;
 	int cda;
@@ -172,7 +172,8 @@ int main() {
 
 
 	// ElecciC3n entre cifrar y descifrar
-	cout << "Seleccione una opciC3n:\n0. Es primo? \n1. Descomponer numero \n2.Valores para (e) \n3. Exponenciacion modular \n4. Cifrar\n5. Descifrar\n";
+	cout << "Seleccione una opciC3n:\n0. Es primo? \n1. Descomponer numero \n2. Valores para (e) \n3. Exponenciacion modular \n4. Cifrar\n5. Descifrar\n6. Hallar el inverso de (e) o (d))";
+	cout <<endl;
 	cin >> opcion;
     
     if (opcion == 0) { // Es primo?
@@ -305,7 +306,7 @@ int main() {
 
 		if (opcionModo == 1) {
 			cout << "Ingrese el mensaje a descifrar (bloques de 4 dC-gitos): ";
-			cin >> mensaje;
+			
 			descifrarModoLibro(p, q, d, mensaje);
 		} else if (opcionModo == 2) {
 			cout << "Ingrese el mensaje a descifrar (valores cifrados separados por espacios): ";
@@ -315,7 +316,26 @@ int main() {
 		} else {
 			cout << "OpciC3n invC!lida.\n";
 		}
-	} else {
+	
+	} 
+
+    else if (opcion == 6) { // hallar el inverso
+
+        int n,e;
+        cout << "Ingrese n :\n";
+        cin >> n;
+        descomponer(n, factores,cantidad_factores);
+        int phi= (factores[0]-1)*(factores[1]-1);
+        cout << "Los factores  p : "<<factores[0]<< " y q: " <<factores[1]<<endl<<endl;
+        
+        cout << "Ingrese e :\n";
+        cin >> e;
+        cout << "El inverso es : ";
+        int inverso;
+        inverso=modInverse(e, phi);
+        cout << inverso;
+    }
+	else {
 		cout << "OpciC3n invC!lida. Elija 1 o 2.\n";
 	}
 
