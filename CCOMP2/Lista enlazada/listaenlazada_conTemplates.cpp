@@ -1,5 +1,5 @@
-// Se completo el analisis de nodos con templates
-// Se realizo una mejora en add para que admita repetidos
+// Analizando el comportamiento del nodo con template
+//se realizaron diferentes instancias y punteros a nodo
 #include <iostream>
 using namespace std;
 
@@ -8,11 +8,13 @@ struct nodo {
     public:
         T valor;
         nodo* next;
-        
-        nodo(T v, nodo* n = nullptr) {
-            valor = v;
-            next = n;
+        nodo(T valor,nodo* next=nullptr){
+            this->valor=valor;
+            this->next=next;
         }
+        //nodo(T valor,nodo* next=nullptr):valor(valor),next(next){ }
+        
+    
 };
 
 template <class T>
